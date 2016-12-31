@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from posts.models import Post
 
 
 def post_create(request):
@@ -15,7 +16,10 @@ def post_detail(request):
 
 
 def post_list(request):
+    query_set = Post.objects.all()
+
     context = {
+        "object_list": query_set,
         "title": "List"
     }
 

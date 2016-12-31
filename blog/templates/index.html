@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <h1>{{ title }} Working!!</h1>
+
+        {% for obj in object_list %}
+        <h1>{{ obj.id }}.{{ obj.title }}</h1>
+        <h2>{{ obj.content }}</h2>
+        <div>{{ obj.updated }}</div>
+        <div>{{ obj.timestamp }}</div>
+        <div>=======================================</div>
+        {% endfor %}
+
+    </body>
+</html>
