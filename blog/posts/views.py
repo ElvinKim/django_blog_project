@@ -19,8 +19,6 @@ def post_create(request):
         instance.save()
         messages.success(request, "Successfully  Created")
         return HttpResponseRedirect(instance.get_absolute_url())
-    else:
-        messages.success(request, "Not Successfully  Created")
 
     context = {
         "form": form,
@@ -48,7 +46,7 @@ def post_list(request):
         "title": "List"
     }
 
-    return render(request, "index.html", context)
+    return render(request, "post_list.html", context)
 
 
 def post_update(request, id):
@@ -76,8 +74,5 @@ def post_delete(request, id):
     instance.delete()
     messages.success(request, "Successfully Delete")
     return redirect("posts:list")
-
-
-
 
 
