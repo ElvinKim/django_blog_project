@@ -1,33 +1,12 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Detail</title>
-    </head>
+{% block container %}
 
-    <body>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-            {% if "html-safe" in message.tags %}
-                {{ message|safe }}
-            {% else %}
-                {{ message }}
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+<h1>{{ title }}</h1>
 
+<div>{{ instance.title }}</div>
+<div>{{ instance.content }}</div>
+<div>{{ instance.updated }}</div>
+<div>{{ instance.timestamp }}</div>
 
-    <h1>{{ title }}</h1>
-
-    <div>{{ instance.title }}</div>
-    <div>{{ instance.content }}</div>
-    <div>{{ instance.updated }}</div>
-    <div>{{ instance.timestamp }}</div>
-
-    </body>
-</html>
+{% endblock container %}
