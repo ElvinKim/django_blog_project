@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
 {% block container %}
-<h1>{{ title }} Working!!</h1>
-
-{% for obj in object_list %}
-<h1><a href="{{ obj.get_absolute_url }}">{{ obj.id }}.{{ obj.title }}</a></h1>
-<h2>{{ obj.content }}</h2>
-<div>{{ obj.updated }}</div>
-<div>{{ obj.timestamp }}</div>
-<div>=======================================</div>
-{% endfor %}
+<div class="col-sm-6 col-sm-offset-3">
+    <h1>Post List</h1>
+    <div class="row">
+    {% for obj in object_list %}
+      <div class="col-sm-12">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}<small> {{obj.timestamp | timesince}} ago </small></a></h3>
+            <p>{{ obj.content|linebreaks|truncatechars:120  }}</p>
+            <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+</div>
 {% endblock container %}

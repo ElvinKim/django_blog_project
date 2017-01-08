@@ -2,10 +2,12 @@
 
 
 {% block container %}
-<h1>Post</h1>
+<div class="col-sm-6 col-sm-offset-3">
+    <h1>Post</h1>
 
-<form method="POST" action=""> {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="create post">
-</form>
+    <form method="POST" action=""> {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-default" type="submit" value="create post">
+    </form>
+</div>
 {% endblock container %}
