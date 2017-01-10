@@ -7,12 +7,14 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from posts.models import Post
 from .forms import PostForm
 
 
 def post_create(request):
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         instance = form.save(commit=False)
@@ -39,11 +41,23 @@ def post_detail(request, id=None):
 
 
 def post_list(request):
-    query_set = Post.objects.all()
+    queryset_list = Post.objects.all()
+
+    paginator = Paginator(queryset_list, 5) # Show 25 contacts per page
+    page_request_var = "page"
+
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
 
     context = {
-        "object_list": query_set,
-        "title": "List"
+        "object_list": queryset,
+        "title": "List",
+        "page_request_var": page_request_var,
     }
 
     return render(request, "post_list.html", context)
@@ -52,7 +66,7 @@ def post_list(request):
 def post_update(request, id):
     instance = get_object_or_404(Post, id=id)
 
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None, request.FILES, instance=instance)
 
     if form.is_valid():
         instance = form.save(commit=False)
