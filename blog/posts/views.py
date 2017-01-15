@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import Http404
 
 from django.contrib import messages
 
@@ -9,11 +10,16 @@ from django.shortcuts import redirect
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from urllib.parse import quote_plus
+
 from posts.models import Post
 from .forms import PostForm
 
 
 def post_create(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     form = PostForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
@@ -31,10 +37,12 @@ def post_create(request):
 
 def post_detail(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
+    share_string = quote_plus(instance.content)
 
     context = {
         "title": instance.title,
         "instance": instance,
+        "share_string": share_string,
     }
 
     return render(request, "detail.html", context)
@@ -64,6 +72,9 @@ def post_list(request):
 
 
 def post_update(request, slug):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     instance = get_object_or_404(Post, slug=slug)
 
     form = PostForm(request.POST or None, request.FILES, instance=instance)
@@ -84,6 +95,9 @@ def post_update(request, slug):
 
 
 def post_delete(request, slug):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     instance = get_object_or_404(Post, slug=slug)
     instance.delete()
     messages.success(request, "Successfully Delete")
