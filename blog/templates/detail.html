@@ -23,6 +23,10 @@
 
 
     <h1>{{ title }} <small>{{ instance.timestamp }}</small> </h1>
+    {% if instance.user.get_full_name %}
+    <p>Author : {{ instance.user.get_full_name }}</p>
+    {% endif %}
+
     <div>{{ instance.content|linebreaks }}</div>
 </div>
 
